@@ -1,21 +1,19 @@
 package Dao;
 
+import Storage.BaseCsvStorage;
 import entity.User;
-import Interface.UserDao;
-import BaseStorage.BaseCsvStorage;
+
 import java.util.List;
 
 public class UserDaoImpl extends BaseCsvStorage<User> implements UserDao {
 
-    private static final String FILE_PATH = "C:\\Users\\moberholzer\\eclipse-workspace\\Bmi\\src\\Storage\\User.csv";
+    private static final String FILE_PATH = "C:\\Users\\moberholzer\\Documents\\GitHub\\Bibliotheksverwaltungssystem\\src\\Storage\\User.csv";
 
     public UserDaoImpl() {
         super(FILE_PATH, User.class);
-        // Define columns for the User class: name (String), age (int), height (double), weight (double)
+        addColumn("userId", int.class);
         addColumn("name", String.class);
-        addColumn("age", int.class);
-        addColumn("height", double.class);
-        addColumn("weight", double.class);
+        addColumn("address", String.class);
         initializeColumns();
     }
 
@@ -40,18 +38,16 @@ public class UserDaoImpl extends BaseCsvStorage<User> implements UserDao {
     }
 
     @Override
-    public User getUserByName(String name) {
+    public User getUserByUserId(int userId) {
         return getAllValues().stream()
-                .filter(user -> user.getName().equalsIgnoreCase(name))
+                .filter(user -> user.getUserId() == userId)
                 .findFirst()
                 .orElse(null);
     }
 
     @Override
-    public User findUserByName(String name) {
+    public List<User> findUsersByName(String name) {
         return getAllValues().stream()
-                .filter(user -> user.getName().equalsIgnoreCase(name))
-                .findFirst()
-                .orElse(null);
+                .filter(user -> user.getName().equalsIgnoreCase(name)).toList();
     }
 }

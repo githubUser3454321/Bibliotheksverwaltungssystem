@@ -1,4 +1,4 @@
-package BaseStorage;
+package Storage;
 
 import java.io.*;
 import java.lang.reflect.Field;

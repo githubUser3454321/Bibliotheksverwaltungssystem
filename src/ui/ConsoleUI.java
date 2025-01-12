@@ -1,15 +1,16 @@
 package ui;
 import java.util.Scanner;
-import Interface.UserDao;
-import Interface.BMIService;
-import entity.User;
 
-public class BMIConsoleUI {
+import Dao.UserDao;
+import entity.User;
+import service.Service;
+
+public class ConsoleUI {
     private final UserDao userDao;
-    private final BMIService bmiService;
+    private final Service bmiService;
     private final Scanner scanner;
 
-    public BMIConsoleUI(UserDao userDao, BMIService bmiService, Scanner scanner) {
+    public ConsoleUI(UserDao userDao, Service bmiService, Scanner scanner) {
         this.userDao = userDao;
         this.bmiService = bmiService;
         this.scanner = scanner;
@@ -23,8 +24,8 @@ public class BMIConsoleUI {
     public void displayMenu() {
     	System.out.println("");
     	System.out.println("");
-    	System.out.println("Bitte wählen Sie eine Option:");
-        System.out.println("1. Daten eingeben (Name, Gewicht, Grösse)");
+    	System.out.println("Bitte wï¿½hlen Sie eine Option:");
+        System.out.println("1. Daten eingeben (Name, Gewicht, Grï¿½sse)");
         System.out.println("2. BMI berechnen");
         System.out.println("3. Daten anzeigen");
         System.out.println("4. Beenden");
@@ -37,7 +38,7 @@ public class BMIConsoleUI {
         System.out.println("Geben Sie Ihr Alter ein:");
         int age = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("Geben Sie Ihre Grösse in Metern ein:");
+        System.out.println("Geben Sie Ihre Grï¿½sse in Metern ein:");
         double height = Double.parseDouble(scanner.nextLine());
 
         System.out.println("Geben Sie Ihr Gewicht in Kilogramm ein:");
@@ -52,13 +53,13 @@ public class BMIConsoleUI {
 
     public void displayUsers() {
         for (User user : userDao.getAllUsers()) {
-            System.out.println(user.getName() + " - " + user.getAge() + " Jahre - Grösse: " + user.getHeight() + "m - Gewicht: " + user.getWeight() + "kg");
+            System.out.println(user.getName() + " - " + user.getAge() + " Jahre - Grï¿½sse: " + user.getHeight() + "m - Gewicht: " + user.getWeight() + "kg");
         }
     }
 
     public void calculateAndDisplayBMI() {
         if (userDao.getAllUsers().isEmpty()) { // Check if user data exists
-            System.out.println("Es sind keine Benutzerdaten verfügbar. Bitte geben Sie zuerst Daten ein.");
+            System.out.println("Es sind keine Benutzerdaten verfï¿½gbar. Bitte geben Sie zuerst Daten ein.");
             return;
         }
 
@@ -68,10 +69,10 @@ public class BMIConsoleUI {
 
         var user = userDao.findUserByName(name); // Retrieve user by name
         if (user == null) {
-            System.out.println("Benutzer nicht gefunden. Bitte geben Sie einen gültigen Namen ein.");
+            System.out.println("Benutzer nicht gefunden. Bitte geben Sie einen gï¿½ltigen Namen ein.");
         } else {
             double bmi = bmiService.calculateBMI(user.getWeight(), user.getHeight());
-            System.out.printf("Der BMI von %s beträgt: %.2f (%s) %n", user.getName(), bmi, bmiService.interpretBMI(bmi));
+            System.out.printf("Der BMI von %s betrï¿½gt: %.2f (%s) %n", user.getName(), bmi, bmiService.interpretBMI(bmi));
         }
     }
 }

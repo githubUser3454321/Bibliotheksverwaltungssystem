@@ -1,8 +1,7 @@
 package service;
-import Interface.BMIService;
 import entity.User;
 
-public class BMIServiceImpl implements BMIService {
+public class ServiceImpl implements Service {
     @Override
     public double calculateBMI(User user) {
         return user.getWeight() / (user.getHeight() * user.getHeight());

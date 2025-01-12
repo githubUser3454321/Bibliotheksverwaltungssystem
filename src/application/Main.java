@@ -1,18 +1,19 @@
-import Interface.BMIService;
-import Interface.UserDao;
-import ui.BMIConsoleUI;
+package application;
+import ui.ConsoleUI;
 
 import java.util.Scanner;
 
+import Dao.UserDao;
 import Dao.UserDaoImpl;
-import service.BMIServiceImpl;
+import service.Service;
+import service.ServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
         UserDao userDao = new UserDaoImpl();
-        BMIService bmiService = new BMIServiceImpl();
+        Service bmiService = new ServiceImpl();
         Scanner scanner = new Scanner(System.in); // Create Scanner instance once
-        BMIConsoleUI ui = new BMIConsoleUI(userDao, bmiService, scanner); // Pass it to the UI
+        ConsoleUI ui = new ConsoleUI(userDao, bmiService, scanner); // Pass it to the UI
         
         ui.displayStartUpMenu();
         
@@ -20,7 +21,7 @@ public class Main {
             ui.displayMenu();
 
             if (!scanner.hasNextLine()) {
-                System.out.println("Ungültige Eingabe. Bitte eine Zahl eingeben.");
+                System.out.println("Ungï¿½ltige Eingabe. Bitte eine Zahl eingeben.");
                 continue;
             }
 
@@ -40,10 +41,10 @@ public class Main {
                         System.out.println("Auf Wiedersehen!");
                         return;
                     }
-                    default -> System.out.println("Ungültige Auswahl.");
+                    default -> System.out.println("Ungï¿½ltige Auswahl.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Ungültige Eingabe. Bitte geben Sie eine gültige Zahl ein.");
+                System.out.println("Ungï¿½ltige Eingabe. Bitte geben Sie eine gï¿½ltige Zahl ein.");
             }
         }
     }
