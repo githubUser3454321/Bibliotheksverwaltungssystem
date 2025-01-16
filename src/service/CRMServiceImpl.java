@@ -11,12 +11,16 @@ public class CRMServiceImpl implements CRMService {
     private final VerleihDao verleihDao;
     private final MediumDao mediumDao;
     private final Scanner scanner;
+    private final StorageService storageService;
+    private final VerleihService verleiheService;
 	
-	public CRMServiceImpl(Scanner scanner, UserDao userDao, VerleihDao verleihDao, MediumDao mediumDao) {
+	public CRMServiceImpl(Scanner scanner, UserDao userDao, VerleihDao verleihDao, MediumDao mediumDao, StorageService storageService, VerleihService verleiheService) {
         this.userDao = userDao;
         this.verleihDao = verleihDao;
         this.mediumDao = mediumDao;
         this.scanner = scanner;
+        this.storageService = storageService;
+        this.verleiheService = verleiheService;
 	}
 	@Override
 	public void Search() {
@@ -61,9 +65,7 @@ public class CRMServiceImpl implements CRMService {
                         System.out.println("VerleihStart:" + verleih.getVerleihDatum() + "- Rückgabedatum: " + verleih.getRueckgabeDatum() + " - Medium " + medium.getTitle());
                     }
                 }
-                case 2 -> {
-                	throw new UnsupportedOperationException("Noch nicht implementiert!!");
-                }
+                case 2 -> verleiheService.NewVerleih(customerNumber);
                 case 3 -> {
                     return;
                 }

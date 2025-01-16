@@ -13,6 +13,8 @@ import service.CRMService;
 import service.CRMServiceImpl;
 import service.StorageService;
 import service.StorageServiceImpl;
+import service.VerleihService;
+import service.VerleihServiceImpl;
 
 
 public class Main {
@@ -21,11 +23,12 @@ public class Main {
     	UserDao userDao = new UserDaoImpl();
         VerleihDao verleihDao = new VerleihDaoImpl();
         MediumDao mediumDao = new MediumDaoImpl();
-
-        CRMService crmService = new CRMServiceImpl(scanner, userDao, verleihDao, mediumDao);
         StorageService storageService = new StorageServiceImpl(scanner, userDao, verleihDao, mediumDao);
+        VerleihService verleiheService = new VerleihServiceImpl(scanner, userDao, verleihDao, mediumDao, storageService);
+        CRMService crmService = new CRMServiceImpl(scanner, userDao, verleihDao, mediumDao, storageService, verleiheService );
         
-        ConsoleUI ui = new ConsoleUI(userDao, verleihDao, mediumDao, crmService, storageService, scanner);
+
+        ConsoleUI ui = new ConsoleUI(crmService, storageService, verleiheService, scanner);
         
         ui.displayStartUpMenu();
         
@@ -47,7 +50,7 @@ public class Main {
                 switch (choice) {
                     case 1 -> ui.promptCRM();
                     case 2 -> ui.promtStorage();
-                    case 3 -> ui.calculateAndDisplayBMI();
+                    case 3 -> ui.promtLend();
                     case 4 -> {
                         System.out.println("Auf Wiedersehen!");
                         return;

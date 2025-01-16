@@ -29,7 +29,7 @@ public class StorageServiceImpl implements StorageService {
 		for (var medium : mediums) {
 			
 			var isActive = verleihDao.isActiveVerleihByMediumId(medium.getMediumId());
-			if (!disaplyOnlyOpenMediums || isActive) {
+			if (!disaplyOnlyOpenMediums || isActive) { // acticve means it has been set to a dude
 				System.out.println("Nummer:" + medium.getMediumId() + "- Title: " + medium.getTitle() + " - Beschreibung: " + medium.getDescription() + (isActive? " - nicht vergeben" : " - vergeben"));	
 			}
         }
@@ -44,11 +44,11 @@ public class StorageServiceImpl implements StorageService {
 					&& medium.getMediumId() == mediumId)
 				return mediumId;
 			System.out.println("Keine gültige eingabe!");
-			return Search();
+			return Search(disaplyOnlyOpenMediums);
 		}
 		else {
 			System.out.println("Keine gültige eingabe!");
-			return Search();
+			return Search(disaplyOnlyOpenMediums);
 		}
 	}
 

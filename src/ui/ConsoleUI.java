@@ -9,22 +9,19 @@ import Dao.VerleihDaoImpl;
 import entity.User;
 import service.CRMService;
 import service.StorageService;
+import service.VerleihService;
 
 public class ConsoleUI {
-    private final UserDao userDao;
-    private final VerleihDao verleihDao;
-    private final MediumDao mediumDao;
     private final CRMService crmService;
     private final Scanner scanner;
     private final StorageService storageService;
+    private final VerleihService verleihService;
     
-    public ConsoleUI(UserDao userDao, VerleihDao verleihDao,MediumDao mediumDao, CRMService crmService, StorageService storageService, Scanner scanner) {
-        this.userDao = userDao;
-        this.verleihDao = verleihDao;
-        this.mediumDao = mediumDao;
+    public ConsoleUI(CRMService crmService, StorageService storageService, VerleihService verleihService, Scanner scanner) {
         this.crmService = crmService;
         this.scanner = scanner;
         this.storageService = storageService;
+        this.verleihService = verleihService;
 
     }
 
@@ -92,7 +89,7 @@ public class ConsoleUI {
             try {
                 int choice = Integer.parseInt(input);
                 switch (choice) {
-                    case 1 -> storageService.Search();
+                    case 1 -> storageService.Search(false);
                     case 2 -> storageService.AddMedium();
                     case 3 -> storageService.DeleteMedium();
                     case 4 -> {
@@ -107,7 +104,32 @@ public class ConsoleUI {
 
     }
 
-    public void calculateAndDisplayBMI() {
+    public void promtLend() {
+    	while (true) {
+        	System.out.println("Verleih:");
+            System.out.println("1. Aktive Verleihe Anzeigen");
+            System.out.println("2. Verleih abschliessen");
+            System.out.println("3. Zurück / Hauptmenü");
 
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Keine Eingabe erkannt. Bitte eine Auswahl treffen.");
+                continue;
+            }
+
+            try {
+                int choice = Integer.parseInt(input);
+                switch (choice) {
+                    case 1 -> verleihService.DisplayActiveLends();
+                    case 2 -> verleihService.CompleteLend();
+                    case 3 -> {
+                        return;
+                    }
+                    default -> System.out.println("Ungültige Auswahl.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Ungültige Eingabe. Bitte geben Sie eine gültige Zahl ein.");
+            }
+        }
     }
 }
