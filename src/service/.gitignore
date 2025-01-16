@@ -2,3 +2,9 @@
 /BMIService.class
 /Service.class
 /ServiceImpl.class
+/CRMService.class
+/CRMServiceImpl.class
+/VerleihService.class
+/VerleihServiceImpl.class
+/StorageService.class
+/StorageServiceImpl.class

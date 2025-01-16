@@ -7,4 +7,5 @@ public interface VerleihDao {
 	List<Verleih> getAllVerleihs();
 	Verleih getVerleihByVerleihId(int verleihId);
     List<Verleih> findVerleihsByUserId(int userId);
+    boolean isActiveVerleihByMediumId(int mediumId);
 }

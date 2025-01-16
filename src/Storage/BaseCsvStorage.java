@@ -84,6 +84,7 @@ public abstract class BaseCsvStorage<T> {
         saveToFile();
     }
 
+
     protected String[] extractValuesFromObject(T object) {
         String[] extractedValues = new String[columnNames.size()];
         for (int i = 0; i < columnNames.size(); i++) {

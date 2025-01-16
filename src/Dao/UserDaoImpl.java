@@ -28,8 +28,18 @@ public class UserDaoImpl extends BaseCsvStorage<User> implements UserDao {
     }
 
     @Override
-    public void addUser(User user) {
-        addValue(user);
+    public int addUser(String name, String address) {
+        
+    	int maxId = 0;
+        for (User user : getAllValues()) {
+            if (user.getUserId() > maxId) {
+                maxId = user.getUserId();
+            }
+        }
+        var newCustomerNumber = maxId + 1;
+    	var newUser = new User(newCustomerNumber,name, address);
+    	addValue(newUser);
+    	return newCustomerNumber;
     }
 
     @Override
@@ -49,5 +59,13 @@ public class UserDaoImpl extends BaseCsvStorage<User> implements UserDao {
     public List<User> findUsersByName(String name) {
         return getAllValues().stream()
                 .filter(user -> user.getName().equalsIgnoreCase(name)).toList();
+    }
+    
+    @Override
+    public void DeletUserByUser(User userToDelete) {
+        for (var user : getAllUsers()) 
+            if (user.getUserId() == userToDelete.getUserId()) {
+            	values.remove(user);
+            }
     }
 }

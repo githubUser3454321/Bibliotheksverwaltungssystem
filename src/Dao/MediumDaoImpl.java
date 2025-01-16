@@ -4,6 +4,7 @@ import java.util.List;
 
 import Storage.BaseCsvStorage;
 import entity.Medium;
+import entity.User;
 
 
 public class MediumDaoImpl extends BaseCsvStorage<Medium> implements MediumDao {
@@ -29,9 +30,18 @@ public class MediumDaoImpl extends BaseCsvStorage<Medium> implements MediumDao {
 	    }
 
 		@Override
-		public void addMedium(Medium medium) {
-			addValue(medium);
+		public int addMedium(String type, String title, String description) {
 			
+	    	int maxId = 0;
+	        for (Medium medium : getAllValues()) {
+	            if (medium.getMediumId() > maxId) {
+	                maxId = medium.getMediumId();
+	            }
+	        }
+	        var newMediumrNumber = maxId + 1;
+	    	var newMedium = new Medium(newMediumrNumber,type, title, description);
+			addValue(newMedium);
+			return newMediumrNumber;
 		}
 
 		@Override
@@ -52,6 +62,14 @@ public class MediumDaoImpl extends BaseCsvStorage<Medium> implements MediumDao {
 			return getAllValues().stream()
 	                .filter(user -> user.getType().equalsIgnoreCase(type)).toList();
 		}
+		
+	    @Override
+	    public void DeletMediumByUser(Medium mediumToDelete) {
+	        for (var medium : getAllMediums()) 
+	            if (medium.getMediumId() == mediumToDelete.getMediumId()) {
+	            	values.remove(medium);
+	            }
+	    }
 
 
 }

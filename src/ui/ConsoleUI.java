@@ -1,78 +1,113 @@
 package ui;
 import java.util.Scanner;
 
+import Dao.MediumDao;
+import Dao.MediumDaoImpl;
 import Dao.UserDao;
+import Dao.VerleihDao;
+import Dao.VerleihDaoImpl;
 import entity.User;
-import service.Service;
+import service.CRMService;
+import service.StorageService;
 
 public class ConsoleUI {
     private final UserDao userDao;
-    private final Service bmiService;
+    private final VerleihDao verleihDao;
+    private final MediumDao mediumDao;
+    private final CRMService crmService;
     private final Scanner scanner;
-
-    public ConsoleUI(UserDao userDao, Service bmiService, Scanner scanner) {
+    private final StorageService storageService;
+    
+    public ConsoleUI(UserDao userDao, VerleihDao verleihDao,MediumDao mediumDao, CRMService crmService, StorageService storageService, Scanner scanner) {
         this.userDao = userDao;
-        this.bmiService = bmiService;
+        this.verleihDao = verleihDao;
+        this.mediumDao = mediumDao;
+        this.crmService = crmService;
         this.scanner = scanner;
+        this.storageService = storageService;
+
     }
 
-    public void displayStartUpMenu() {
-    	System.out.println("Willkommen beim BMI-Rechner!");
+	public void displayStartUpMenu() {
+    	System.out.println("Starting up...");
         System.out.println("============================");
     }
     
     public void displayMenu() {
     	System.out.println("");
     	System.out.println("");
-    	System.out.println("Bitte w�hlen Sie eine Option:");
-        System.out.println("1. Daten eingeben (Name, Gewicht, Gr�sse)");
-        System.out.println("2. BMI berechnen");
-        System.out.println("3. Daten anzeigen");
+    	System.out.println("Hauptmenü:");
+        System.out.println("1. CRM");
+        System.out.println("2. Lager");
+        System.out.println("3. Verleihe");
         System.out.println("4. Beenden");
     }
 
-    public void promptUserData() {
-        System.out.println("Geben Sie Ihren Namen ein:");
-        String name = scanner.nextLine(); // Use the passed Scanner
+    public void promptCRM() {
+    	
+        while (true) {
+        	System.out.println("CRM:");
+            System.out.println("1. Kontakt suche");
+            System.out.println("2. Kontakt erfassen");
+            System.out.println("3. Kontakt Löschen (Dsgvo - Datenschutz)");
+            System.out.println("4. Zurück / Hauptmenü");
 
-        System.out.println("Geben Sie Ihr Alter ein:");
-        int age = Integer.parseInt(scanner.nextLine());
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Keine Eingabe erkannt. Bitte eine Auswahl treffen.");
+                continue;
+            }
 
-        System.out.println("Geben Sie Ihre Gr�sse in Metern ein:");
-        double height = Double.parseDouble(scanner.nextLine());
-
-        System.out.println("Geben Sie Ihr Gewicht in Kilogramm ein:");
-        double weight = Double.parseDouble(scanner.nextLine());
-
-        // Save data to the user DAO
-        User user = new User(name, age, height, weight);
-        userDao.addUser(user);
-
-        System.out.println("Daten wurden erfolgreich gespeichert.");
+            try {
+                int choice = Integer.parseInt(input);
+                switch (choice) {
+                    case 1 -> crmService.Search();
+                    case 2 -> crmService.AddContact();
+                    case 3 -> crmService.DeleteContact();
+                    case 4 -> {
+                        return;
+                    }
+                    default -> System.out.println("Ungültige Auswahl.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Ungültige Eingabe. Bitte geben Sie eine gültige Zahl ein.");
+            }
+        }
     }
 
-    public void displayUsers() {
-        for (User user : userDao.getAllUsers()) {
-            System.out.println(user.getName() + " - " + user.getAge() + " Jahre - Gr�sse: " + user.getHeight() + "m - Gewicht: " + user.getWeight() + "kg");
+    public void promtStorage() {
+    	while (true) {
+        	System.out.println("Lager:");
+            System.out.println("1. Medium suche");
+            System.out.println("2. Medium erfassen");
+            System.out.println("3. Medium Löschen");
+            System.out.println("4. Zurück / Hauptmenü");
+
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Keine Eingabe erkannt. Bitte eine Auswahl treffen.");
+                continue;
+            }
+
+            try {
+                int choice = Integer.parseInt(input);
+                switch (choice) {
+                    case 1 -> storageService.Search();
+                    case 2 -> storageService.AddMedium();
+                    case 3 -> storageService.DeleteMedium();
+                    case 4 -> {
+                        return;
+                    }
+                    default -> System.out.println("Ungültige Auswahl.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Ungültige Eingabe. Bitte geben Sie eine gültige Zahl ein.");
+            }
         }
+
     }
 
     public void calculateAndDisplayBMI() {
-        if (userDao.getAllUsers().isEmpty()) { // Check if user data exists
-            System.out.println("Es sind keine Benutzerdaten verf�gbar. Bitte geben Sie zuerst Daten ein.");
-            return;
-        }
 
-        
-        System.out.print("Geben Sie den Namen des Benutzers ein: ");
-        String name = scanner.nextLine();
-
-        var user = userDao.findUserByName(name); // Retrieve user by name
-        if (user == null) {
-            System.out.println("Benutzer nicht gefunden. Bitte geben Sie einen g�ltigen Namen ein.");
-        } else {
-            double bmi = bmiService.calculateBMI(user.getWeight(), user.getHeight());
-            System.out.printf("Der BMI von %s betr�gt: %.2f (%s) %n", user.getName(), bmi, bmiService.interpretBMI(bmi));
-        }
     }
 }

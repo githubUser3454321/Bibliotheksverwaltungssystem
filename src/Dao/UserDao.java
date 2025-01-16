@@ -4,8 +4,9 @@ import java.util.List;
 import entity.User;
 
 public interface UserDao {
-	void addUser(User user);
+	int addUser(String name, String address );
 	List<User> getAllUsers();
     User getUserByUserId(int userId);
     List<User> findUsersByName(String name);
+	void DeletUserByUser(User user);
 }

@@ -51,4 +51,9 @@ public class VerleihDaoImpl extends BaseCsvStorage<Verleih> implements VerleihDa
         return getAllValues().stream()
                 .filter(verleih -> verleih.getUserId() == userId).toList();
     }
+    
+    boolean isActiveVerleihByMediumId(int mediumId) {
+    	
+    	return true;
+    }
 }
